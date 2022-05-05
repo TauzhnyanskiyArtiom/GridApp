@@ -1,31 +1,48 @@
 package ua.opu.gridapp
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
 class ItemDialog : DialogFragment() {
 
+    lateinit var listener: ItemDialogListener
     private var selected: Int = 0
+
+    interface ItemDialogListener {
+        fun onDialogResult()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        try {
+            listener = context as ItemDialogListener
+        } catch (e: ClassCastException) {}
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        selected = arguments?.getInt("selectedNumber") as Int
+        selected = arguments?.getInt(SELECTED_NUMBER_MESSAGE) as Int
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireActivity())
             .setTitle("Number")
             .setMessage("You choose number: $selected")
-            .setPositiveButton("Ok", null)
+            .setPositiveButton("Ok") { _, _ -> listener.onDialogResult() }
             .create()
     }
 
     companion object {
+        const val SELECTED_NUMBER_MESSAGE = "selectedNumber"
+
         fun newInstance(selectedNumber:Int): ItemDialog {
             val args = Bundle()
-            args.putInt("selectedNumber", selectedNumber)
+            args.putInt(SELECTED_NUMBER_MESSAGE, selectedNumber)
             val fragment = ItemDialog()
             fragment.arguments = args
             return fragment

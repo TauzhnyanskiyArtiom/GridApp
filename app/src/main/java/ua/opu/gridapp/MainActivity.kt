@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.github.javafaker.Faker
 import ua.opu.gridapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ItemDialog.ItemDialogListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ItemAdapter
     private val faker = Faker()
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initList(): MutableList<Item> {
         var resultList = mutableListOf<Item>()
-        for (i in 1..100)
+        for (i in 1..COUNT_ITEMS)
             resultList.add(Item(faker.number().numberBetween(1, 99), faker.color().hex()))
 
         return resultList
@@ -38,4 +38,12 @@ class MainActivity : AppCompatActivity() {
 
 
     data class Item(var number: Int, var color: String)
+
+    override fun onDialogResult() {
+        adapter.submitList(initList())
+    }
+
+    companion object {
+        const val COUNT_ITEMS = 100
+    }
 }
