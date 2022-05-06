@@ -12,27 +12,34 @@ import ua.opu.gridapp.databinding.ItemListBinding
 
 class ItemAdapter(
     private val context: Context,
-    private val onClick: (MainActivity.Item) -> Unit) :
+    private val onClick: (MainActivity.Item) -> Unit
+) :
     ListAdapter<MainActivity.Item, ItemAdapter.ItemViewHolder>(ItemDiffCallback) {
 
-    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding: ItemListBinding = ItemListBinding.bind(itemView)
+    inner class ItemViewHolder(
+        view: View,
+        private val onClick: (MainActivity.Item) -> Unit
+    ) : RecyclerView.ViewHolder(view) {
+        private val binding: ItemListBinding = ItemListBinding.bind(itemView)
+
+        fun bind(item: MainActivity.Item) {
+            this.binding.textView.text = item.number.toString()
+            this.binding.cardView.setCardBackgroundColor(Color.parseColor(item.color))
+
+            this.itemView.setOnClickListener {
+                item.let(onClick)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         var v = LayoutInflater.from(context).inflate(R.layout.item_list, parent, false)
-        return ItemViewHolder(v)
+        return ItemViewHolder(v, onClick)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-
         val item = getItem(position)
-        holder.binding.textView.text = item.number.toString()
-        holder.binding.cardView.setCardBackgroundColor(Color.parseColor(item.color))
-
-        holder.itemView.setOnClickListener {
-          item.let(onClick)
-        }
+        holder.bind(item)
     }
 
     object ItemDiffCallback : DiffUtil.ItemCallback<MainActivity.Item>() {
