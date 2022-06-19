@@ -5,9 +5,11 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import ua.opu.gridapp.databinding.ItemListBinding
 
 class ElementAdapter(
@@ -20,13 +22,14 @@ class ElementAdapter(
         view: View,
         private val onClick: (MainActivity.Element) -> Unit
     ) : RecyclerView.ViewHolder(view) {
-        private val binding: ItemListBinding = ItemListBinding.bind(itemView)
+        private val value = view.findViewById<TextView>(R.id.valueIn)
+        private val circleElement = view.findViewById<MaterialCardView>(R.id.circle_element)
 
         fun bind(element: MainActivity.Element) {
-            this.binding.textView.text = element.number.toString()
-            this.binding.cardView.setCardBackgroundColor(Color.parseColor(element.color))
+            value.text = element.number.toString()
+            circleElement.setCardBackgroundColor(Color.parseColor(element.color))
 
-            this.itemView.setOnClickListener {
+            itemView.setOnClickListener {
                 element.let(onClick)
             }
         }
