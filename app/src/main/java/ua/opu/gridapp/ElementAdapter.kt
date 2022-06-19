@@ -10,24 +10,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ua.opu.gridapp.databinding.ItemListBinding
 
-class ItemAdapter(
+class ElementAdapter(
     private val context: Context,
-    private val onClick: (MainActivity.Item) -> Unit
+    private val onClick: (MainActivity.Element) -> Unit
 ) :
-    ListAdapter<MainActivity.Item, ItemAdapter.ItemViewHolder>(ItemDiffCallback) {
+    ListAdapter<MainActivity.Element, ElementAdapter.ItemViewHolder>(ItemDiffCallback) {
 
     inner class ItemViewHolder(
         view: View,
-        private val onClick: (MainActivity.Item) -> Unit
+        private val onClick: (MainActivity.Element) -> Unit
     ) : RecyclerView.ViewHolder(view) {
         private val binding: ItemListBinding = ItemListBinding.bind(itemView)
 
-        fun bind(item: MainActivity.Item) {
-            this.binding.textView.text = item.number.toString()
-            this.binding.cardView.setCardBackgroundColor(Color.parseColor(item.color))
+        fun bind(element: MainActivity.Element) {
+            this.binding.textView.text = element.number.toString()
+            this.binding.cardView.setCardBackgroundColor(Color.parseColor(element.color))
 
             this.itemView.setOnClickListener {
-                item.let(onClick)
+                element.let(onClick)
             }
         }
     }
@@ -42,16 +42,16 @@ class ItemAdapter(
         holder.bind(item)
     }
 
-    object ItemDiffCallback : DiffUtil.ItemCallback<MainActivity.Item>() {
+    object ItemDiffCallback : DiffUtil.ItemCallback<MainActivity.Element>() {
         override fun areItemsTheSame(
-            oldItem: MainActivity.Item,
-            newItem: MainActivity.Item
-        ): Boolean = oldItem == newItem
+            oldElement: MainActivity.Element,
+            newElement: MainActivity.Element
+        ): Boolean = oldElement == newElement
 
         override fun areContentsTheSame(
-            oldItem: MainActivity.Item,
-            newItem: MainActivity.Item
-        ): Boolean = oldItem == newItem
+            oldElement: MainActivity.Element,
+            newElement: MainActivity.Element
+        ): Boolean = oldElement == newElement
 
     }
 }

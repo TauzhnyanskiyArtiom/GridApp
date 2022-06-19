@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.github.javafaker.Faker
 import ua.opu.gridapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), ItemDialog.ItemDialogListener {
+class MainActivity : AppCompatActivity(), ElementDialog.ItemDialogListener {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: ItemAdapter
+    private lateinit var adapter: ElementAdapter
     private val faker = Faker()
-    private var list:MutableList<Item> = initList()
+    private var list:MutableList<Element> = initList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity(), ItemDialog.ItemDialogListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = ItemAdapter(this) {
-            val dialog = ItemDialog.newInstance(it.number)
+        adapter = ElementAdapter(this) {
+            val dialog = ElementDialog.newInstance(it.number)
             dialog.show(supportFragmentManager, "dlg")
         }
         binding.list.adapter = adapter
@@ -28,16 +28,16 @@ class MainActivity : AppCompatActivity(), ItemDialog.ItemDialogListener {
         adapter.submitList(list)
     }
 
-    private fun initList(): MutableList<Item> {
-        var resultList = mutableListOf<Item>()
+    private fun initList(): MutableList<Element> {
+        var resultList = mutableListOf<Element>()
         for (i in 1..COUNT_ITEMS)
-            resultList.add(Item(faker.number().numberBetween(1, 99), faker.color().hex()))
+            resultList.add(Element(faker.number().numberBetween(1, 99), faker.color().hex()))
 
         return resultList
     }
 
 
-    data class Item(var number: Int, var color: String)
+    data class Element(var number: Int, var color: String)
 
     override fun onDialogResult() {
         adapter.submitList(initList())

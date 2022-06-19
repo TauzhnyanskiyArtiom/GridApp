@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
-class ItemDialog : DialogFragment() {
+class ElementDialog : DialogFragment() {
 
     lateinit var listener: ItemDialogListener
     private var selected: Int = 0
@@ -40,10 +40,10 @@ class ItemDialog : DialogFragment() {
     companion object {
         const val SELECTED_NUMBER_MESSAGE = "selectedNumber"
 
-        fun newInstance(selectedNumber:Int): ItemDialog {
+        fun newInstance(selectedNumber:Int): ElementDialog {
             val args = Bundle()
             args.putInt(SELECTED_NUMBER_MESSAGE, selectedNumber)
-            val fragment = ItemDialog()
+            val fragment = ElementDialog()
             fragment.arguments = args
             return fragment
         }
